@@ -1,2 +1,2 @@
-# Rest-project
-Allociné-like in REST
+﻿# Rest-project
+Allociné in REST
