@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Form to create a new movie</title>
+  <link rel="stylesheet" href="movieShow.css" />
+ </head>
+<body>
+<form action="../RESTProject/rest/sendMovies" method="POST">
+<table>
+	<tr><td>
+    	<label for="cinema">Cinema :</label>
+    	<input name="cinema" />
+    </td></tr>
+    <tr><td>
+   		<label for="title">Title :</label>
+	    <input name="title" />
+    </td></tr>
+    <tr><td>
+	    <label for="duration">Duration :</label>
+	    <input name="duration" />
+    </td></tr>
+    <tr><td>
+	    <label for="Language">Language :</label>
+	    <input name="language" />
+    </td></tr>
+    <tr><td>
+	    <label for="directorF">Director : <br/> Firstname :</label>
+	    <input name="directorF" />
+	    
+	    <br/>
+	    <label for="directorL">Name :</label>
+	    <input name="directorL" />
+    </td></tr>
+    <tr><td>
+    <label for="actorF">Actor : <br/> Firstname :</label>
+	    <input name="actorF" />
+	    
+	    <br/>
+	    <label for="actorL">Name :</label>
+	    <input name="actorL" />
+    </td></tr>
+    <tr><td>
+    	<label for="age">Age : </label>
+     	<select name="age" size="1">
+                <option>none</option>
+                <option>12</option>
+                <option>16</option>
+                <option>18</option>
+            </select>
+    </td></tr>
+    <tr><td>
+	    <label for="startDate">StartDate : </label>
+	    <input  name="startDate" />
+	    <br/>
+	    <label for="endDate">EndDate : </label>
+	    <input  name="endDate" />
+    </td></tr>
+    <tr><td>
+	    <label for="day">Day : </label>
+	     <select name="day" size="1">
+                <option>Monday</option>
+                <option>Tuesday</option>
+                <option>Wednesday</option>
+                <option>Thursday</option>
+                <option>Friday</option>
+                <option>Saturday</option>
+                <option>Sunday</option>
+            </select>
+    </td></tr>
+    <tr><td>
+    	<input type="submit" value="Submit" />
+    </td></tr>
+</table>
+</form>
+</body>
+</html>
+
+   
