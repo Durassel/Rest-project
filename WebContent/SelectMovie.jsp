@@ -23,7 +23,7 @@
 			</tr>
 		</table>
 	</div>
-<form action="http://localhost:8090/RESTProject/rest/sendMovies">
+<form action="SelectController.jsp">
 	<label>Choose a cinema :</label><br/>
 	<select name="cinema" size="1">
 	<%//<input name="cinema"  value="1">

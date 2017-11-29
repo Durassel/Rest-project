@@ -3,7 +3,7 @@
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="java.lang.String"%>
-<%@page import="java.util.ArrayList" %>
+<%@page import="java.util.List" %>
 <%
 
 try {//on se connecte
@@ -28,6 +28,7 @@ int age = Integer.parseInt(request.getParameter("age"));
 int nbActors = Integer.parseInt(request.getParameter("nbActor"));
 ArrayList<String> actorsF = new ArrayList<String>();
 ArrayList<String> actorsL = new ArrayList<String>();
+
 for(int i=1; i<= nbActors; i++)
 {
 	actorsF.add(request.getParameter("actorF"+i));
@@ -83,8 +84,10 @@ if(message.equals(""))
 	request.setAttribute("actorsF", actorsF);
 	request.setAttribute("actorsL", actorsL);
 	out.println("ok");
-	//getContextpath
-	response.sendRedirect("../RESTProject/rest/sendMovies");
+	//request.getContextpath("RESTProject/rest/sendMovies");
+	//response.sendRedirect("NewMovie.jsp");
+    RequestDispatcher rd = getServletContext().getRequestDispatcher("/rest/sendMovies");
+    rd.forward(request, response);
 }
 else 
 {

@@ -23,6 +23,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+
+import object.ArrayActors;
 import object.Person;
 import restProject.LoadMovie;
 import restProject.SendMovie;
@@ -70,6 +74,7 @@ public class SendMoviesResource {
     @POST
     @Produces(MediaType.TEXT_HTML)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    //@Consumes(MediaType.MULTIPART_FORM_DATA)
     public void newSendMovie(@FormParam("id") String id,
             @FormParam("cinema") String cinema,
             @FormParam("title") String title,
@@ -78,14 +83,28 @@ public class SendMoviesResource {
             @FormParam("directorF") String directorF,
             @FormParam("directorL") String directorL,
             @FormParam("nbActor") int nbActor,
-            
-            @FormParam("actorF") ArrayList<String> actorsF,
-            @FormParam("actorL") ArrayList<String> actorsL,
+            @FormParam("actorsF") List<String> actorsF,
+            @FormParam("actorsL") List<String> actorsL,
             @FormParam("age") int age,
             @FormParam("startDate") String startDate,
             @FormParam("endDate") String endDate,
             @FormParam("day") String day,
             @Context HttpServletResponse servletResponse) throws IOException {
+    	/*ArrayList<String> actorsF= new ArrayList<String>();
+    	for(FormDataBodyPart actors: actorF)
+    	{
+    		actorsF.add(actors.getValueAs(String.class));
+    	}
+    	ArrayList<String> actorsL= new ArrayList<String>();
+    	for(FormDataBodyPart actors: actorL)
+    	{
+    		actorsL.add(actors.getValueAs(String.class));
+    	}
+    		/*Person actor = new Person("Allan","Keer");
+    		ArrayList<String> actorsF= new ArrayList<String>();
+    				actorsF.add(actor.getFirstName());
+    				ArrayList<String> actorsL= new ArrayList<String>();
+    				actorsL.add(actor.getLastName());*/
     	//connexion a la DB pour y ajouter le nouveau film
     	try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -98,7 +117,7 @@ public class SendMoviesResource {
     	String password = "software";
     	Connection connect;
 		try {//on creer un film
-			SendMovie sendMovie = new SendMovie(id, cinema, title, duration, language, directorF, directorL, actorsF.get(0), actorsL.get(0),age , startDate, endDate, day);
+			SendMovie sendMovie = new SendMovie(id, cinema, title, duration, language, directorF, directorL, actorsF/*.get(0)*/, actorsL/*.get(0)*/,age , startDate, endDate, day);
 	    	LoadMovie.instance.getModel().put(id, sendMovie);
 			connect = DriverManager.getConnection(url, name, password);
 			Statement stat = connect.createStatement();
@@ -107,6 +126,7 @@ public class SendMoviesResource {
 											+ "WHERE firstname='"+directorF + "' "
 											+ "AND lastname='"+ directorL+"'");
 			int ctrl=0;
+			
 			while(rs.next())
 			{
 				ctrl=1;
@@ -122,24 +142,7 @@ public class SendMoviesResource {
 			rs.next();
 			int idDirector= rs.getInt("idPersons");//on prend l'ID
 			
-			rs= stat.executeQuery("SELECT * FROM Persons "
-					+ "WHERE firstname='"+actorsF.get(0) + "' "
-					+ "AND lastname='"+ actorsL.get(0)+"'");
-			ctrl=0;
-			while(rs.next())
-			{
-				ctrl=1;
-			}
-			if(ctrl==0)
-			{
-				stat.executeUpdate("INSERT INTO Persons "
-						+ "VALUES (null,'"+actorsF.get(0) + "','"+ actorsL.get(0)+"')");
-			}
-			rs= stat.executeQuery("SELECT idPersons FROM Persons "
-					+ "WHERE firstname='"+actorsF.get(0) + "' "
-					+ "AND lastname='"+ actorsL.get(0)+"'");
-			rs.next();
-			int idActor= rs.getInt("idPersons");
+			
 			
 			rs= stat.executeQuery("SELECT * FROM Cinemas "
 					+ "WHERE cinemaName='"+ cinema + "'");
@@ -158,9 +161,41 @@ public class SendMoviesResource {
 			
 			//on creer la requete d'ajout puis on l'envoie à la DB
 			String sql1="INSERT INTO Movies VALUES(null,'"+title+"','"+duration+"','"+language+"','"+age+"',"
-					+ "'"+startDate+"','"+endDate+"','"+day+"','"+idCinema+"','"+idDirector+"','"+idActor+"')";
+					+ "'"+startDate+"','"+endDate+"','"+day+"','"+idCinema+"','"+idDirector+"',1)";
 			 stat.executeUpdate(sql1);
-			 
+			 rs = stat.executeQuery("SELECT idMovies FROM Movies WHERE idMovies=(SELECT MAX(idMovies) FROM Movies)");
+			 rs.next();
+			 int idMovie= rs.getInt("idMovies");
+			ArrayList<Person> actors = new ArrayList<Person>();
+			actors= sendMovie.getActors().getActor();
+			 for(int i=0; i<actors.size();i++)
+				 
+				{ System.out.println(idMovie);
+				 	ctrl=0;
+					rs= stat.executeQuery("SELECT * FROM Persons "
+							+ "WHERE firstname='"+actors.get(i).getFirstName() + "' "
+							+ "AND lastname='"+ actors.get(i).getLastName()+"'");
+					while(rs.next())
+					{
+						ctrl=1;
+					}
+					if(ctrl==0)
+					{
+						stat.executeUpdate("INSERT INTO Persons "
+								+ "VALUES (null,'"+actors.get(i).getFirstName() + "','"+ actors.get(i).getLastName()+"')");
+					}
+					rs=stat.executeQuery("SELECT idPersons FROM Persons WHERE firstname='"+actors.get(i).getFirstName()+"' AND lastname='"+actors.get(i).getLastName()+"'");
+					rs.next();
+					int idActor = rs.getInt("idPersons");
+					stat.executeUpdate("INSERT INTO Castings "
+							+ "VALUES (null,'"+idMovie + "','"+ idActor+"')");
+					/*rs= stat.executeQuery("SELECT idPersons FROM Persons "
+							+ "WHERE firstname='"+actorsF.get(i) + "' "
+							+ "AND lastname='"+ actorsL.get(i)+"'");
+					rs.next();
+					*/
+					//int idActor= rs.getInt("idPersons");
+				} System.out.println(idMovie);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@page import="java.util.ArrayList" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <head>
@@ -30,6 +31,7 @@
             {
                 out.println(errMessage);
             }
+
             //../RESTProject/rest/sendMovies
         %>
 <form action="addController.jsp" method="POST">
@@ -107,7 +109,36 @@
                 <option>Saturday</option>
                 <option>Sunday</option>
             </select>
-    </td></tr>
+            <label>schedule</label>
+            <input name="schedule1"/>
+    </td>
+    <td><label for="day">Day : </label>
+	     <select name="day" size="1">
+                <option>Monday</option>
+                <option>Tuesday</option>
+                <option>Wednesday</option>
+                <option>Thursday</option>
+                <option>Friday</option>
+                <option>Saturday</option>
+                <option>Sunday</option>
+            </select>
+            <label>schedule</label>
+            <input name="schedule2"/>
+    </td>
+    <td><label for="day1">Day : </label>
+	     <select name="day1" size="1">
+                <option>Monday</option>
+                <option>Tuesday</option>
+                <option>Wednesday</option>
+                <option>Thursday</option>
+                <option>Friday</option>
+                <option>Saturday</option>
+                <option>Sunday</option>
+            </select>
+            <label>schedule</label>
+            <input name="schedule3"/>
+    </td>
+    </tr>
     <tr><td>
     	<input type="submit" value="Submit" />
     </td></tr>

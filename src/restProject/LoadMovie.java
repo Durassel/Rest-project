@@ -32,19 +32,32 @@ public enum LoadMovie {//c'est ici qu'on va charger les données de la DB
 		try {
 			this.connect = DriverManager.getConnection(url, name, password);
 			this.stat = this.connect.createStatement();
-			ResultSet rs= stat.executeQuery("SELECT idMovies,CinemaName,title,duration,language,director.firstname,director.lastname,actor."
-					+ "firstname,actor.lastname,age,startDate,endDate,day " + 
+			ResultSet rs= stat.executeQuery("SELECT idMovies,CinemaName,title,duration,language,director.firstname,director.lastname,"
+					+ "age,startDate,endDate,day " + 
 					"FROM MOVIES " + 
 					"INNER JOIN Persons AS director ON Movies.idDirector=director.idPersons " + 
-					"INNER JOIN Persons AS Actor ON Movies.idActor=actor.idPersons " + 
 					"INNER JOIN Cinemas ON Movies.idCinema = Cinemas.idCinemas ");
 			  while(rs.next())
 			  {
+				  Statement stat1 = this.connect.createStatement();
+				  ResultSet res= stat1.executeQuery("SELECT firstname, lastname FROM Castings "
+				  		+ "INNER JOIN Persons ON Castings.idActor = Persons.idPersons "
+				  		+ "WHERE idMovie='"+rs.getInt("idMovies")+"'");
+				  ArrayList<Person> actor = new ArrayList<Person>();
+				  while(res.next())
+				  {
+					  actor.add(new Person(res.getString("firstname"),res.getString("lastname")));
+				  }
 				  //on met tout dans la map
-				  this.contentProvider.put(rs.getString("idMovies"), new SendMovie(rs.getString("idMovies"),rs.getString("CinemaName"),rs.getString("title"),
+				  /*this.contentProvider.put(rs.getString("idMovies"), new SendMovie(rs.getString("idMovies"),rs.getString("CinemaName"),rs.getString("title"),
 					rs.getString("duration"),rs.getString("language"),new Person(rs.getString("director.firstname"),rs.getString("director.lastname")),
 					new Person(rs.getString("actor.firstname"),
-					rs.getString("actor.lastname")),rs.getInt("age"),rs.getString("startDate"),rs.getString("endDate"),rs.getString("day")));
+					rs.getString("actor.lastname")),rs.getInt("age"),rs.getString("startDate"),rs.getString("endDate"),rs.getString("day")));*/
+				  
+				  
+				  this.contentProvider.put(rs.getString("idMovies"), new SendMovie(rs.getString("idMovies"),rs.getString("CinemaName"),rs.getString("title"),
+							rs.getString("duration"),rs.getString("language"),new Person(rs.getString("director.firstname"),rs.getString("director.lastname")),
+							actor,rs.getInt("age"),rs.getString("startDate"),rs.getString("endDate"),rs.getString("day")));
 			  }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

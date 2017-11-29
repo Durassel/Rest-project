@@ -1,9 +1,11 @@
 package restProject;
 
+import object.ArrayActors;
 import object.Person;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 //la class qui stocke un film diffusé
@@ -15,7 +17,8 @@ public class SendMovie {
     private String duration;
     private String language;
     private Person director;
-    private Person actor;
+    private ArrayActors actors;
+    //private List<Person> actors;
     private int age;
     private String startDate;
     private String endDate;
@@ -25,9 +28,50 @@ public class SendMovie {
     {
     	
     }
-    
-    public SendMovie (String id, String cinema, String title, String duration, String language, String dFName, String dLName, /*ArrayList<*/String/*>*/ aFName, 
-    		/*ArrayList<*/String/*>*/ aLName, int age, String startDate, String endDate, String day){
+    public SendMovie (String id, String cinema, String title, String duration, String language, String dFName, String dLName, List<String> aFName, 
+    		List<String> aLName, int age, String startDate, String endDate, String day){
+        this.id = id;
+        this.cinema = cinema;
+        this.title = title;
+        this.duration = duration;
+        this.language = language;
+        this.director = new Person(dFName,dLName);
+        
+        this.actors = new ArrayActors(aFName,aLName);
+        /*this.actors = new ArrayList<Person>();
+        for(int i=0;i<aFName.size();i++)
+        {
+        		this.actors.add(new Person(aFName.get(i),aLName.get(i)));
+        }*/
+        this.age = age;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.day = day;
+        
+    }
+    public SendMovie (String id, String cinema, String title, String duration, String language, Person director, ArrayList<Person> actorNames, 
+    		 int age, String startDate, String endDate, String day){
+        this.id = id;
+        this.cinema = cinema;
+        this.title = title;
+        this.duration = duration;
+        this.language = language;
+        this.director = director;
+        
+        this.actors = new ArrayActors(actorNames);
+        /*this.actors = new ArrayList<Person>();
+        for(Person actorName : actorNames)
+        {
+        		this.actors.add(actorName);
+        }*/
+        this.age = age;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.day = day;
+        
+    }
+    /*public SendMovie (String id, String cinema, String title, String duration, String language, String dFName, String dLName, /*ArrayList<*//*String/*>*/ /*aFName, 
+    		/*ArrayList<*//*String/*>*//* aLName, int age, String startDate, String endDate, String day){
         this.id = id;
         this.cinema = cinema;
         this.title = title;
@@ -40,9 +84,9 @@ public class SendMovie {
         this.endDate = endDate;
         this.day = day;
         
-    }
+    }*/
     
-    public SendMovie (String id, String cinema, String title, String duration, String language, Person director , /*ArrayList<*/Person/*>*/ actors,
+    /*public SendMovie (String id, String cinema, String title, String duration, String language, Person director , /*ArrayList<*//*Person/*>*//* actors,
     		int age, String startDate, String endDate, String day){
         this.id = id;
         this.cinema = cinema;
@@ -56,7 +100,7 @@ public class SendMovie {
         this.endDate = endDate;
         this.day = day;
         
-    }
+    }*/
     public String getId() {
         return id;
     }
@@ -90,12 +134,18 @@ public class SendMovie {
 	public void setDirector(Person director) {
 		this.director = director;
 	}
-	public Person getActor() {
-		return actor;
+	public ArrayActors getActors() {
+		return actors;
 	}
-	public void setActor(Person actor) {
-		this.actor = actor;
+	public void setActors(ArrayActors actor) {
+		this.actors= actor;
 	}
+	/*public List<Person> getActors() {
+		return actors;
+	}
+	public void setActors(List<Person> actors) {
+		this.actors = actors;
+	}*/
 	public int getAge() {
 		return age;
 	}
