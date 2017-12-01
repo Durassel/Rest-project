@@ -64,15 +64,15 @@
     <% out.write("<input type='hidden' name='nbActor' value='"+nbActor+"'/>");
     for(int i=1;i<=nbActor;i++)
     {
-    	out.write("<label for='actorF"+i+"'>Actor");
+    	out.write("<label for='actorsF'>Actor");
     	if(i>1)
     	{
     		out.write(i+"");
         }
     	out.write(" : <br/> Firstname :</label>");
-    	out.write(" <input name='actorF"+i+"' /><br/>");
-    	out.write("<label for='actorL"+i+"'>Name :</label>");
-    	out.write("<input name='actorL"+i+"' /><br/>");
+    	out.write(" <input name='actorsF' /><br/>");
+    	out.write("<label for='actorsL'>Name :</label>");
+    	out.write("<input name='actorsL' /><br/>");
     }	
     %>
     

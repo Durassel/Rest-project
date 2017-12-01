@@ -11,7 +11,6 @@ import java.sql.Statement;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -23,13 +22,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
-
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataParam;
-
 import object.ArrayActors;
 import object.Person;
-import object.listAName;
 import restProject.LoadMovie;
 import restProject.SendMovie;
 
@@ -84,6 +78,8 @@ public class SendMoviesResource {
             @FormParam("language") String language,
             @FormParam("directorF") String directorF,
             @FormParam("directorL") String directorL,
+            @FormParam("actorsF") List<String> actorsF,
+            @FormParam("actorsL") List<String> actorsL,
             @FormParam("nbActor") int nbActor,
             @FormParam("age") int age,
             @FormParam("dayS") int dayS,
@@ -120,8 +116,8 @@ public class SendMoviesResource {
     				ArrayList<String> actorsL= new ArrayList<String>();
     				actorsL.add(actor.getLastName());*/
     	//connexion a la DB pour y ajouter le nouveau film
-    	List<String> actorsF = listAName.getfName();
-    	List<String> actorsL = listAName.getlName();
+    	//List<String> actorsF = listAName.getfName();
+    	//List<String> actorsL = listAName.getlName();
     	try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e1) {

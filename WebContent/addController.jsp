@@ -4,7 +4,7 @@
 <%@page import="java.sql.Connection"%>
 <%@page import="java.lang.String"%>
 <%@page import="java.util.ArrayList" %>
-<%@page import="object.listAName" %>
+<%@page import="javax.ws.rs.core.Form" %>
 <%
 
 try {//on se connecte
@@ -27,15 +27,9 @@ String directorL = request.getParameter("directorL");
 String directorF = request.getParameter("directorF");
 
 int age = Integer.parseInt(request.getParameter("age"));
-int nbActors = Integer.parseInt(request.getParameter("nbActor"));
 
-ArrayList<String> actorsF = new ArrayList<String>();
-ArrayList<String> actorsL = new ArrayList<String>();
-for(int i=1; i<= nbActors; i++)
-{
-	actorsF.add(request.getParameter("actorF"+i));
-	actorsL.add(request.getParameter("actorL"+i));
-}
+String[] actorsF = request.getParameterValues("actorsF");
+String[] actorsL = request.getParameterValues("actorsL");
 
 int monthS = Integer.parseInt(request.getParameter("monthS"));
 int dayS = Integer.parseInt(request.getParameter("dayS"));
@@ -75,16 +69,20 @@ if(directorL.equals(""))
 {
 	message+= "Please put a a surname to the director<br/>";
 }
-for(int i=0; i<nbActors;i++)
+for(int i=0; i<actorsF.length;i++)
 {
-	if(actorsF.get(i).equals(""))
+	if(actorsF[i].equals(""))
 	{
 		message+= "Please put a firstname to the actor"+(i+1)+"<br/>";
 	}
-	if(actorsL.get(i).equals(""))
+	if(actorsL[i].equals(""))
 	{
 		message+= "Please put a surname to the actor"+(i+1)+"<br/>";
 	}
+}
+if(yearS>yearE || (yearS>=yearE && (monthS>monthE || (monthS<=monthE && dayS>dayE))))
+{
+	message+="The starting date should be before the ending one";
 }
 if(dayS<0 || (((monthS==1 ||  monthS==3 ||  monthS==5 ||  monthS==7 ||  monthS==8 ||  monthS==10 ||  monthS==12) && dayS >31)
 || ((monthS==4 ||  monthS==6 ||  monthS==9 ||  monthS==11) && dayS >30) || (monthS==2 && dayS>28)))
@@ -104,13 +102,16 @@ if((hour1<0 || hour1>23) || (hour2<0 || hour2>23) || (hour3<0 || hour3>23) || (m
 }
 if(message.equals(""))
 {
-	listAName actors = new listAName(actorsF,actorsL);
+	//listAName actors = new listAName(actorsF,actorsL);
 	//request.setAttribute("actors", actors);
 	/*request.setAttribute("actorsF", actorsF);
 	request.setAttribute("actorsL", actorsL);
 	out.println("ok");*/
 	//request.getContextpath("RESTProject/rest/sendMovies");
 	//response.sendRedirect("NewMovie.jsp");
+	/*Form form = new Form();
+	form.param("actorsF",actorsF);*/
+	
     RequestDispatcher rd = getServletContext().getRequestDispatcher("/rest/sendMovies");
     rd.forward(request, response);
     /*SendMoviesResource movie = new SendMoviesResource();
