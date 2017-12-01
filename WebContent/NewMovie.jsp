@@ -50,7 +50,6 @@
     </td></tr>
     <tr><td>
 	    <label for="Language">Language :</label>
-	    <input type="checkbox" name="checklanguage" value="ON" />
 	    <input name="language" />
     </td></tr>
     <tr><td>
@@ -93,50 +92,119 @@
     </td></tr>
     <tr><td>
 	    <label for="startDate">StartDate : </label>
-	    <input  name="startDate" />
+	    <select  name="monthS" size="1">
+	    	<%
+	    	String monthI="";
+	    		for(int i=1;i<13;i++)
+	    		{
+	    			monthI +="<option value='"+i+"'>"+i+"</option>";
+	    		}
+	    		out.write(monthI);
+	    	%>
+	    </select>
+	     <select  name="dayS" size="1">
+	    	<%
+	    	String monthD="";
+	    		for(int i=1;i<32;i++)
+	    		{
+	    			monthD +="<option value='"+i+"'>"+i+"</option>";
+	    		}
+	    		out.write(monthD);
+	    	%>
+	    </select>
+	     <select  name="yearS" size="1"/>
+	    	<%
+	    	String monthY="";
+	    		for(int i=2017;i<2028;i++)
+	    		{
+	    			monthY +="<option value='"+i+"'>"+i+"</option>";
+	    		}
+	    	out.write(monthY);
+	    	%>
+	    </select>
 	    <br/>
 	    <label for="endDate">EndDate : </label>
-	    <input  name="endDate" />
+	    <select  name="monthE" size="1">
+	    	<%
+	    		out.write(monthI);
+	    	%>
+	    </select>
+	     <select  name="dayE" size="1">
+	    	<%
+	    		out.write(monthD);
+	    	%>
+	    </select>
+	     <select  name="yearE" size="1">
+	    	<%
+	    		out.write(monthY);
+	    	%>
+	    </select>
     </td></tr>
     <tr><td>
-	    <label for="day">Day : </label>
-	     <select name="day" size="1">
-                <option>Monday</option>
-                <option>Tuesday</option>
-                <option>Wednesday</option>
-                <option>Thursday</option>
-                <option>Friday</option>
-                <option>Saturday</option>
-                <option>Sunday</option>
-            </select>
+	    <label for="day1">Day : </label>
+	    <select name='day1' size='1'>
+		<% String allDay="  "+
+                "<option >Monday</option>" +
+                "<option >Tuesday</option>" +
+                "<option >Wednesday</option>" +
+                "<option >Thursday</option>" +
+                "<option >Friday</option>" +
+                "<option >Saturday</option>" +
+                "<option >Sunday</option>";
+	    out.write(allDay); %>
+	    </select><br>
             <label>schedule</label>
-            <input name="schedule1"/>
+            <select name="hour1" size='1'>
+            	<%String h= "";
+            	for(int i=0;i<24;i++)
+	    		{
+	    			h +="<option value='"+i+"'>"+i+"</option>";
+	    		}
+	    	out.write(h); %>
+            </select>
+            <label> : </label>
+            <select name="minute1" size='1'>
+            	<%String m= "";
+            	for(int i=0;i<12;i++)
+	    		{
+	    			m +="<option value='"+i+"'>"+(i*5)+"</option>";
+	    		}
+	    	out.write(m); %>
+            </select>
     </td>
-    <td><label for="day">Day : </label>
-	     <select name="day" size="1">
-                <option>Monday</option>
-                <option>Tuesday</option>
-                <option>Wednesday</option>
-                <option>Thursday</option>
-                <option>Friday</option>
-                <option>Saturday</option>
-                <option>Sunday</option>
-            </select>
+    <td><label for="day2">Day : </label>
+    <select name='day2' size='1'>
+	     <%out.write(allDay); %>
+	     </select><br>
             <label>schedule</label>
-            <input name="schedule2"/>
+            <select name='hour2' size='1'>
+            	<%
+	    			out.write(h);
+            	%>
+            </select>
+            <label> : </label>
+            <select name='minute2' size='1'>
+            	<%
+            	out.write(m); 
+            	%>
+            </select>
     </td>
-    <td><label for="day1">Day : </label>
-	     <select name="day1" size="1">
-                <option>Monday</option>
-                <option>Tuesday</option>
-                <option>Wednesday</option>
-                <option>Thursday</option>
-                <option>Friday</option>
-                <option>Saturday</option>
-                <option>Sunday</option>
-            </select>
+    <td><label for="day3">Day : </label>
+    <select name='day3' size='1'>
+	     <%out.write(allDay); %>
+	     </select><br>
             <label>schedule</label>
-            <input name="schedule3"/>
+            <select name='hour3' size='1'>
+            	<%
+            	out.write(h); 
+            	%>
+            </select>
+            <label> : </label>
+            <select name='minute3' size='1'>
+            	<%
+            	out.write(m);
+            	%>
+            </select>
     </td>
     </tr>
     <tr><td>

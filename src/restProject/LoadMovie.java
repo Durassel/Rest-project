@@ -26,14 +26,14 @@ public enum LoadMovie {//c'est ici qu'on va charger les données de la DB
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-    	String url ="jdbc:mysql://localhost:3306/moviesdb";
+    	String url ="jdbc:mysql://localhost:3306/dbmovies";
     	String  name= "root";
     	String password = "software";
 		try {
 			this.connect = DriverManager.getConnection(url, name, password);
 			this.stat = this.connect.createStatement();
 			ResultSet rs= stat.executeQuery("SELECT idMovies,CinemaName,title,duration,language,director.firstname,director.lastname,"
-					+ "age,startDate,endDate,day " + 
+					+ "age,startDate,endDate,day1,day2,day3,schedule1, schedule2, schedule3 " + 
 					"FROM MOVIES " + 
 					"INNER JOIN Persons AS director ON Movies.idDirector=director.idPersons " + 
 					"INNER JOIN Cinemas ON Movies.idCinema = Cinemas.idCinemas ");
@@ -57,7 +57,8 @@ public enum LoadMovie {//c'est ici qu'on va charger les données de la DB
 				  
 				  this.contentProvider.put(rs.getString("idMovies"), new SendMovie(rs.getString("idMovies"),rs.getString("CinemaName"),rs.getString("title"),
 							rs.getString("duration"),rs.getString("language"),new Person(rs.getString("director.firstname"),rs.getString("director.lastname")),
-							actor,rs.getInt("age"),rs.getString("startDate"),rs.getString("endDate"),rs.getString("day")));
+							actor,rs.getInt("age"),rs.getString("startDate"),rs.getString("endDate"),rs.getString("day1"),rs.getString("day2"),rs.getString("day3"),
+							rs.getString("schedule1"),rs.getString("schedule2"),rs.getString("schedule3")));
 			  }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

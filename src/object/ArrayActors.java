@@ -3,8 +3,10 @@ package object;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.FormParam;
+
 public class ArrayActors {
-	private ArrayList<Person> actors = new ArrayList<Person>();
+	private List<Person> actors = new ArrayList<Person>();
 
 	
 	public ArrayActors() {
@@ -24,11 +26,11 @@ public class ArrayActors {
 		
 	}
 
-	public ArrayList<Person> getActor() {
+	public List<Person> getActor() {
 		return actors;
 	}
 
-	public void setActor(ArrayList<Person> actors) {
+	public void setActor(List<Person> actors) {
 		this.actors = actors;
 	}
 }

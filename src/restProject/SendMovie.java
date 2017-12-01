@@ -1,6 +1,7 @@
 package restProject;
 
 import object.ArrayActors;
+import object.Day;
 import object.Person;
 
 import java.sql.Date;
@@ -22,14 +23,15 @@ public class SendMovie {
     private int age;
     private String startDate;
     private String endDate;
-    private String day;
-
+    private List<Day> show;
+   
+    
     public SendMovie()
     {
     	
     }
     public SendMovie (String id, String cinema, String title, String duration, String language, String dFName, String dLName, List<String> aFName, 
-    		List<String> aLName, int age, String startDate, String endDate, String day){
+    		List<String> aLName, int age, String startDate, String endDate, String day1, String day2, String day3, String schedule1, String schedule2, String schedule3){
         this.id = id;
         this.cinema = cinema;
         this.title = title;
@@ -46,11 +48,14 @@ public class SendMovie {
         this.age = age;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.day = day;
+        this.show= new ArrayList<Day>();
+        this.show.add(new Day(day1,schedule1));
+        this.show.add(new Day(day2,schedule3));
+        this.show.add(new Day(day3,schedule3));
         
     }
     public SendMovie (String id, String cinema, String title, String duration, String language, Person director, ArrayList<Person> actorNames, 
-    		 int age, String startDate, String endDate, String day){
+    		 int age, String startDate, String endDate, String day1, String day2, String day3, String schedule1, String schedule2, String schedule3){
         this.id = id;
         this.cinema = cinema;
         this.title = title;
@@ -67,7 +72,10 @@ public class SendMovie {
         this.age = age;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.day = day;
+        this.show= new ArrayList<Day>();
+        this.show.add(new Day(day1,schedule1));
+        this.show.add(new Day(day2,schedule3));
+        this.show.add(new Day(day3,schedule3));
         
     }
     /*public SendMovie (String id, String cinema, String title, String duration, String language, String dFName, String dLName, /*ArrayList<*//*String/*>*/ /*aFName, 
@@ -152,6 +160,7 @@ public class SendMovie {
 	public void setAge(int age) {
 		this.age = age;
 	}
+	
 	public String getStartDate() {
 		return startDate;
 	}
@@ -164,11 +173,13 @@ public class SendMovie {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-	public String getDay() {
-		return day;
+	
+
+	public List<Day> getShow() {
+		return show;
 	}
-	public void setDay(String day) {
-		this.day = day;
+	public void setShow(List<Day> day) {
+		this.show = show;
 	}
 	public void setTitle(String title) {
         this.title = title;

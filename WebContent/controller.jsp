@@ -10,7 +10,7 @@ try {//on se connecte
 	// TODO Auto-generated catch block
 	e1.printStackTrace();
 }
- String url ="jdbc:mysql://localhost:3306/moviesdb";
+ String url ="jdbc:mysql://localhost:3306/dbmovies";
  String  name= "root";
  String password = "software";
  String message;

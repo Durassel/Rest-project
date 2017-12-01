@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -28,6 +29,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import object.ArrayActors;
 import object.Person;
+import object.listAName;
 import restProject.LoadMovie;
 import restProject.SendMovie;
 
@@ -41,7 +43,7 @@ public class SendMoviesResource {
     UriInfo uriInfo;
     @Context
     Request request;
-
+    
     // Return the list of sendMovies to the user in the browser
     @GET
     @Produces(MediaType.TEXT_XML)
@@ -75,7 +77,7 @@ public class SendMoviesResource {
     @Produces(MediaType.TEXT_HTML)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     //@Consumes(MediaType.MULTIPART_FORM_DATA)
-    public void newSendMovie(@FormParam("id") String id,
+    public void newSendMovie(
             @FormParam("cinema") String cinema,
             @FormParam("title") String title,
             @FormParam("duration") String duration,
@@ -83,13 +85,25 @@ public class SendMoviesResource {
             @FormParam("directorF") String directorF,
             @FormParam("directorL") String directorL,
             @FormParam("nbActor") int nbActor,
-            @FormParam("actorsF") List<String> actorsF,
-            @FormParam("actorsL") List<String> actorsL,
             @FormParam("age") int age,
-            @FormParam("startDate") String startDate,
-            @FormParam("endDate") String endDate,
-            @FormParam("day") String day,
-            @Context HttpServletResponse servletResponse) throws IOException {
+            @FormParam("dayS") int dayS,
+            @FormParam("dayE") int dayE,
+            @FormParam("monthS") int monthS,
+            @FormParam("monthE") int monthE,
+            @FormParam("yearS") int yearS,
+            @FormParam("yearE") int yearE,
+            @FormParam("day1") String day1,
+            @FormParam("day2") String day2,
+            @FormParam("day3") String day3,
+            @FormParam("hour1") int hour1,
+            @FormParam("hour2") int hour2,
+            @FormParam("hour3") int hour3,
+            @FormParam("minute1") int minute1,
+            @FormParam("minute2") int minute2,
+            @FormParam("minute3") int minute3,
+            @Context HttpServletResponse servletResponse) throws IOException 
+    		
+    		{
     	/*ArrayList<String> actorsF= new ArrayList<String>();
     	for(FormDataBodyPart actors: actorF)
     	{
@@ -106,23 +120,37 @@ public class SendMoviesResource {
     				ArrayList<String> actorsL= new ArrayList<String>();
     				actorsL.add(actor.getLastName());*/
     	//connexion a la DB pour y ajouter le nouveau film
+    	List<String> actorsF = listAName.getfName();
+    	List<String> actorsL = listAName.getlName();
     	try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-    	String url ="jdbc:mysql://localhost:3306/moviesdb";
+    	String url ="jdbc:mysql://localhost:3306/dbmovies";
     	String  name= "root";
     	String password = "software";
     	Connection connect;
 		try {//on creer un film
-			SendMovie sendMovie = new SendMovie(id, cinema, title, duration, language, directorF, directorL, actorsF/*.get(0)*/, actorsL/*.get(0)*/,age , startDate, endDate, day);
-	    	LoadMovie.instance.getModel().put(id, sendMovie);
 			connect = DriverManager.getConnection(url, name, password);
 			Statement stat = connect.createStatement();
+			ResultSet rs=stat.executeQuery("SELECT idMovies FROM Movies WHERE idMovies=(SELECT MAX(idMovies) FROM Movies)");
+			int a=1;
+			while(rs.next())
+			{
+				a=rs.getInt("idMovies")+1;
+			}
+			
+			String id=Integer.toString(a);
+			SendMovie sendMovie = new SendMovie(id,cinema, title, duration, language, directorF, directorL, actorsF/*.get(0)*/, actorsL/*.get(0)*/,age , 
+					(String)(yearS+"-"+monthS+"-"+dayS),(String)(yearE+"-"+monthE+"-"+dayE), day1,day2,day3, 
+					(String)(hour1+":"+minute1), (String)(hour2+":"+minute2), (String)(hour3+":"+minute3) );
+	    	LoadMovie.instance.getModel().put(id, sendMovie);
+			
+			
 			//ici on va regarder si le lieu existe déjà ainsi que les differentes personnes
-			ResultSet rs= stat.executeQuery("SELECT * FROM Persons "
+			rs= stat.executeQuery("SELECT * FROM Persons "
 											+ "WHERE firstname='"+directorF + "' "
 											+ "AND lastname='"+ directorL+"'");
 			int ctrl=0;
@@ -157,20 +185,22 @@ public class SendMoviesResource {
 			}
 			rs= stat.executeQuery("SELECT idCinemas FROM Cinemas WHERE cinemaName='"+ cinema + "'");
 			rs.next();
+			String startD=yearS+"-"+monthS+"-"+dayS;
+			String endD=yearE+"-"+monthE+"-"+dayE;
 			int idCinema= rs.getInt("idCinemas");
-			
 			//on creer la requete d'ajout puis on l'envoie à la DB
-			String sql1="INSERT INTO Movies VALUES(null,'"+title+"','"+duration+"','"+language+"','"+age+"',"
-					+ "'"+startDate+"','"+endDate+"','"+day+"','"+idCinema+"','"+idDirector+"',1)";
-			 stat.executeUpdate(sql1);
+			//String sql1=;
+			 stat.executeUpdate("INSERT INTO Movies VALUES(null,'"+title+"','"+duration+"','"+language+"','"+age+"'"
+						+ ",'"+startD+"','"+endD+"','"+day1+"','"+day2+"','"+day3+"','"+(String)(hour1+":"+minute1*5)+"','"+(String)(hour2+":"+minute2*5)
+						+"','"+(String)(hour3+":"+minute3*5)+"','"+idCinema+"','"+idDirector+"')");
 			 rs = stat.executeQuery("SELECT idMovies FROM Movies WHERE idMovies=(SELECT MAX(idMovies) FROM Movies)");
 			 rs.next();
 			 int idMovie= rs.getInt("idMovies");
 			ArrayList<Person> actors = new ArrayList<Person>();
-			actors= sendMovie.getActors().getActor();
+			actors= (ArrayList<Person>) sendMovie.getActors().getActor();
 			 for(int i=0; i<actors.size();i++)
 				 
-				{ System.out.println(idMovie);
+				{
 				 	ctrl=0;
 					rs= stat.executeQuery("SELECT * FROM Persons "
 							+ "WHERE firstname='"+actors.get(i).getFirstName() + "' "
@@ -195,14 +225,14 @@ public class SendMoviesResource {
 					rs.next();
 					*/
 					//int idActor= rs.getInt("idPersons");
-				} System.out.println(idMovie);
+				}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 
-        servletResponse.sendRedirect("../NewMovie.jsp"); //refresh de la page
+        //servletResponse.sendRedirect("../NewMovie.jsp"); //refresh de la page
     }
 
     // Defines that the next path parameter after sendMovies is
@@ -228,6 +258,38 @@ public class SendMoviesResource {
         	 }
          }
          return sendMovies;
+    }
+    
+    private int dayInt(String day)
+    {
+    	if(day=="Monday")
+    	{
+    		return 1;
+    	}
+    	else if(day=="Tuesday")
+    	{
+    		return 2;
+    	}
+    	else if(day=="Wednesday")
+    	{
+    		return 3;
+    	}
+    	else if(day=="Thursday")
+    	{
+    		return 4;
+    	}
+    	else if(day=="Friday")
+    	{
+    		return 5;
+    	}
+    	else if(day=="Saturday")
+    	{
+    		return 6;
+    	}
+    	else
+    	{
+    		return 7;
+    	}
     }
 
     
