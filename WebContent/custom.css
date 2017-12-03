@@ -1,0 +1,60 @@
+@charset "ISO-8859-1";
+
+html, body {
+	height: 100%;
+	margin: 0; padding: 0;
+}
+
+body {
+	display : table;
+	width: 100%;
+}
+
+footer {
+	display : table-row;
+	height: 130px;
+}
+
+main {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.navbar {
+	margin: 0 -15px 15px -15px;
+}
+
+.bg-yellow {
+	background: #fecc00 !important;
+}
+
+.search {
+	margin-right: 10px;
+}
+
+.btn .btn-success {
+	width: 100%;
+}
+
+.error {
+	padding: 35px 0 0 0;
+}
+
+.footer-basic-centered{
+	background-color: #292c2f;
+	text-align: center;
+	font: normal 18px sans-serif;
+	margin-top: 20px;
+}
+
+.footer-basic-centered .footer-company{
+	color:  #8d9093;
+	font-size: 24px;
+	margin: 35px 0 15px 0;
+}
+
+.footer-basic-centered .footer-company-name{
+	color:  #8f9296;
+	font-size: 14px;
+	margin: 0;
+}

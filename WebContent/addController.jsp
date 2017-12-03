@@ -3,52 +3,126 @@
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="java.lang.String"%>
+<%@page import="java.util.List" %>
 <%@page import="java.util.ArrayList" %>
 <%@page import="javax.ws.rs.core.Form" %>
-<%
-
-try {//on se connecte
-	Class.forName("com.mysql.jdbc.Driver");
-} catch (ClassNotFoundException e1) {
-	// TODO Auto-generated catch block
-	e1.printStackTrace();
-}
-String url ="jdbc:mysql://localhost:3306/dbmovies";
-String  name= "root";
-String password = "software";
+<%@page import="org.apache.commons.fileupload.FileItem" %>
+<%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory" %>
+<%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload" %>
+<%@page import="java.io.File" %>
+<%@page import="javax.servlet.ServletException" %>
+<%@page import="javax.servlet.http.HttpServlet" %>
+<%@page import="javax.servlet.http.HttpServletRequest" %>
+<%@page import="javax.servlet.http.HttpServletResponse" %>
+<% 
 String message = "";
-Connection connect = DriverManager.getConnection(url, name, password);
-Statement stat = connect.createStatement();
-String cinema =  request.getParameter("cinema");
-String title = request.getParameter("title");
-String duration = request.getParameter("duration");
-String language = request.getParameter("language");
-String directorL = request.getParameter("directorL");
-String directorF = request.getParameter("directorF");
+String cinema= "";
+String title= "";
+String duration= "";
+String language= "";
+String directorL= "";
+String directorF= "";
 
-int age = Integer.parseInt(request.getParameter("age"));
+int age=0;
 
-String[] actorsF = request.getParameterValues("actorsF");
-String[] actorsL = request.getParameterValues("actorsL");
+ArrayList<String> actorsF = new ArrayList<String>();
+ArrayList<String> actorsL = new ArrayList<String>();
 
-int monthS = Integer.parseInt(request.getParameter("monthS"));
-int dayS = Integer.parseInt(request.getParameter("dayS"));
-int yearS = Integer.parseInt(request.getParameter("yearS"));
-int monthE = Integer.parseInt(request.getParameter("monthE"));
-int dayE = Integer.parseInt(request.getParameter("dayE"));
-int yearE = Integer.parseInt(request.getParameter("yearE"));
+int monthS=0;
+int dayS=0;
+int yearS=0;
+int monthE=0;
+int dayE=0;
+int yearE=0;
 
 
-String day1 = request.getParameter("day1");
-String day2 = request.getParameter("day2");
-String day3 = request.getParameter("day3");
-int hour1 = Integer.parseInt(request.getParameter("hour1"));
-int minute1 = Integer.parseInt(request.getParameter("minute1"));
-int hour2 = Integer.parseInt(request.getParameter("hour2"));
-int minute2 = Integer.parseInt(request.getParameter("minute2"));
-int hour3 = Integer.parseInt(request.getParameter("hour3"));
-int minute3 = Integer.parseInt(request.getParameter("minute3"));
+String day1 = "";
+String day2 = "";
+String day3= "";
+int hour1=0;
+int minute1=0;
+int hour2=0;
+int minute2=0;
+int hour3=0;
+int minute3=0;
 
+List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);//on prend tout ce qu'il y a dans la form
+for (FileItem item : items) {
+    if (item.isFormField()){
+        String fieldname = item.getFieldName();
+        String fieldvalue = item.getString();
+        if (fieldname.equals("cinema")) {//puis on stocke dans les variables les résultats
+            cinema=fieldvalue;
+        } else  if (fieldname.equals("title")) {
+            title=fieldvalue;
+        }else  if (fieldname.equals("duration")) {
+            duration=fieldvalue;
+        }else  if (fieldname.equals("language")) {
+            language=fieldvalue;
+        }else  if (fieldname.equals("directorF")) {
+            directorF=fieldvalue;
+        }else  if (fieldname.equals("directorL")) {
+            directorL=fieldvalue;
+        }else  if (fieldname.equals("age")) {
+            age=Integer.parseInt(fieldvalue);
+        }
+        else  if (fieldname.equals("actorsF")) {
+            actorsF.add(item.getString());
+        } else  if (fieldname.equals("actorsL")) {
+        	actorsL.add(item.getString());
+        }
+        else  if (fieldname.equals("monthS")) {
+            monthS=Integer.parseInt(fieldvalue);
+        }else  if (fieldname.equals("dayS")) {
+            dayS=Integer.parseInt(fieldvalue);
+        }else  if (fieldname.equals("yearS")) {
+            yearS=Integer.parseInt(fieldvalue);
+        }else  if (fieldname.equals("monthE")) {
+            monthE=Integer.parseInt(fieldvalue);
+        }else  if (fieldname.equals("dayE")) {
+            dayE=Integer.parseInt(fieldvalue);
+        }else  if (fieldname.equals("yearE")) {
+            yearE=Integer.parseInt(fieldvalue);
+        }else  if (fieldname.equals("day1")) {
+            day1=fieldvalue;
+        }else  if (fieldname.equals("day2")) {
+            day2=fieldvalue;
+        }else  if (fieldname.equals("day3")) {
+            day3=fieldvalue;
+        } else  if (fieldname.equals("hour1")) {
+            hour1=Integer.parseInt(fieldvalue);
+        }
+        else  if (fieldname.equals("minute1")) {
+            minute1=Integer.parseInt(fieldvalue);
+        }else  if (fieldname.equals("hour2")) {
+            hour2=Integer.parseInt(fieldvalue);
+        }
+        else  if (fieldname.equals("minute2")) {
+            minute2=Integer.parseInt(fieldvalue);
+        }else  if (fieldname.equals("hour3")) {
+            hour3=Integer.parseInt(fieldvalue);
+        }
+        else  if (fieldname.equals("minute3")) {
+            minute3=Integer.parseInt(fieldvalue);
+        }
+        
+    }
+    else{//pour l'image
+    	if (item.getName().equals("ActorsL")) {
+        	System.out.println("heyzf");
+        }
+        String name = new File(item.getName()).getName();
+        if(!name.isEmpty())
+        {
+        	System.out.println("name "+name);
+            item.write(new File("C:/Users/Administrateur/eclipse-workspace/RESTProject/WebContent/image" + File.separator + name));
+        }
+        
+    }
+}
+
+
+//on check si c'est bon
 if(cinema.equals(""))
 {
 	message+= "Please put a cinema<br/>";
@@ -69,13 +143,13 @@ if(directorL.equals(""))
 {
 	message+= "Please put a a surname to the director<br/>";
 }
-for(int i=0; i<actorsF.length;i++)
+for(int i=0; i<actorsF.size();i++)
 {
-	if(actorsF[i].equals(""))
+	if(actorsF.get(i).equals(""))
 	{
 		message+= "Please put a firstname to the actor"+(i+1)+"<br/>";
 	}
-	if(actorsL[i].equals(""))
+	if(actorsL.get(i).equals(""))
 	{
 		message+= "Please put a surname to the actor"+(i+1)+"<br/>";
 	}
@@ -100,30 +174,16 @@ if((hour1<0 || hour1>23) || (hour2<0 || hour2>23) || (hour3<0 || hour3>23) || (m
 {
 	message+= "Invalid schedule<br/>";
 }
+if(day1.equals(day2) || day1.equals(day3) || day3.equals(day2))
+{
+	message+="You should put different days<br/>";
+}session.setAttribute("error", message );
 if(message.equals(""))
 {
-	//listAName actors = new listAName(actorsF,actorsL);
-	//request.setAttribute("actors", actors);
-	/*request.setAttribute("actorsF", actorsF);
-	request.setAttribute("actorsL", actorsL);
-	out.println("ok");*/
-	//request.getContextpath("RESTProject/rest/sendMovies");
-	//response.sendRedirect("NewMovie.jsp");
-	/*Form form = new Form();
-	form.param("actorsF",actorsF);*/
-	
-    RequestDispatcher rd = getServletContext().getRequestDispatcher("/rest/sendMovies");
+	RequestDispatcher rd = getServletContext().getRequestDispatcher("/rest/sendMovies");
     rd.forward(request, response);
-    /*SendMoviesResource movie = new SendMoviesResource();
-    movie.newSendMovie(id,cinema,title,duration,language,directorF,directorL,nbActors,actorsF,actorsL,age,startDate,endDate,day);*/
-    
-    
-}
-else 
-{
-	%>
-	    <%session.setAttribute("error", message );%>
-	    <%@include file="NewMovie.jsp"%>
-	    <%
-}
-%>
+} else { %>
+	<%session.setAttribute("error", message );
+	response.sendRedirect("addMovie.jsp");
+} 
+ %>

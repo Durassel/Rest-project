@@ -24,6 +24,7 @@ public class SendMovie {
     private String startDate;
     private String endDate;
     private List<Day> show;
+    private String poster;
    
     
     public SendMovie()
@@ -31,7 +32,8 @@ public class SendMovie {
     	
     }
     public SendMovie (String id, String cinema, String title, String duration, String language, String dFName, String dLName, List<String> aFName, 
-    		List<String> aLName, int age, String startDate, String endDate, String day1, String day2, String day3, String schedule1, String schedule2, String schedule3){
+    		List<String> aLName, int age, String startDate, String endDate, String day1, String day2, String day3, String schedule1, String schedule2,
+    		String schedule3,String poster){
         this.id = id;
         this.cinema = cinema;
         this.title = title;
@@ -52,10 +54,11 @@ public class SendMovie {
         this.show.add(new Day(day1,schedule1));
         this.show.add(new Day(day2,schedule3));
         this.show.add(new Day(day3,schedule3));
-        
+        this.poster=poster;
     }
     public SendMovie (String id, String cinema, String title, String duration, String language, Person director, ArrayList<Person> actorNames, 
-    		 int age, String startDate, String endDate, String day1, String day2, String day3, String schedule1, String schedule2, String schedule3){
+    		 int age, String startDate, String endDate, String day1, String day2, String day3, String schedule1, String schedule2, String schedule3
+    		 ,String poster){
         this.id = id;
         this.cinema = cinema;
         this.title = title;
@@ -76,40 +79,16 @@ public class SendMovie {
         this.show.add(new Day(day1,schedule1));
         this.show.add(new Day(day2,schedule3));
         this.show.add(new Day(day3,schedule3));
-        
+        this.poster=poster;
     }
-    /*public SendMovie (String id, String cinema, String title, String duration, String language, String dFName, String dLName, /*ArrayList<*//*String/*>*/ /*aFName, 
-    		/*ArrayList<*//*String/*>*//* aLName, int age, String startDate, String endDate, String day){
-        this.id = id;
-        this.cinema = cinema;
-        this.title = title;
-        this.duration = duration;
-        this.language = language;
-        this.director = new Person(dFName,dLName);
-        this.actor = new Person (aFName, aLName);
-        this.age = age;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.day = day;
-        
-    }*/
-    
-    /*public SendMovie (String id, String cinema, String title, String duration, String language, Person director , /*ArrayList<*//*Person/*>*//* actors,
-    		int age, String startDate, String endDate, String day){
-        this.id = id;
-        this.cinema = cinema;
-        this.title = title;
-        this.duration = duration;
-        this.language = language;
-        this.director = director;
-        this.actor = actors;
-        this.age = age;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.day = day;
-        
-    }*/
-    public String getId() {
+   
+    public String getPoster() {
+		return poster;
+	}
+	public void setPoster(String poster) {
+		this.poster = poster;
+	}
+	public String getId() {
         return id;
     }
     public void setId(String id) {

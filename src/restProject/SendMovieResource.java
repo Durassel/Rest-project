@@ -76,7 +76,4 @@ public class SendMovieResource {
         LoadMovie.instance.getModel().put(sendMovie.getId(), sendMovie);
         return res;
     }
-
-
-
 }
